@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <title>loftcut</title>
+  <meta charset="UTF-8"> 
+  <link rel="stylesheet" type="text/css" href="./styles/index.css">
+ <script defer src="./scripts/gui/node_modules/three/build/three.min.js"></script>
+ <script defer src="./scripts/gui/node_modules/three/examples/js/controls/OrbitControls.js"></script>
+ <script defer src="./scripts/file-saver/dist/FileSaver.min.js"></script>
+<!--
+ <script defer src="/jsnote/scripts/jsnote/node_modules/three/build/three.min.js"></script>
+ <script defer src="/jsnote/scripts/jsnote/node_modules/three/examples/js/controls/OrbitControls.js"></script>
+ -->
+ <script defer type="module" src="./scripts/index.js"></script>
+</head>
+<body>
+  <header>
+    <div class="title">
+      <a href="/loftcut/"> 
+        <h1>loftcut</h1><img src="./images/scissors.svg">
+      </a>
+    </div>
+    <ul>
+      <li id="importModel">
+        <a>import</a>
+        <input id="importModelFile" type="file" name="files" style="display:none;">
+      </li>
+      <li id="exportModel"><a>export</a></li>
+    </ul>
+  </header>
+  <aside>
+  </aside>
+  <main>
+    <div id="draw"></div>
+  </main>
+  <footer>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,37 @@
+version: '3'
+services:
+#  api:
+#    image: node:alpine
+#    restart: always 
+#    volumes:
+#      - ./src:/usr/src
+#    working_dir: '/usr/src'
+#    command: npm start
+#    networks:
+#      - default
+  api:
+    image: amrit3701/freecad-cli:latest
+    restart: always 
+    volumes:
+      - ./src:/usr/src
+    working_dir: '/usr/src'
+    tty: true
+#    command: python3.8 server.py
+#    command: python --version
+    networks:
+      - default
+
+
+  web:
+    image: nginx:alpine
+    restart: always 
+    volumes:
+      - ./public:/usr/share/nginx/html
+      - ./conf.d:/etc/nginx/conf.d
+    networks:
+      - neco_link
+      - default
+networks:
+  neco_link:
+    external: true 
+
