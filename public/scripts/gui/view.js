@@ -1,3 +1,6 @@
 export * as importModel from "./view/importModel.js"
 export * as exportModel from "./view/exportModel.js"
+export * as save from "./view/save.js"
 export * as draw from "./view/draw.js"
+export * as tables from "./view/tables.js"
+export * as input from "./view/input.js"

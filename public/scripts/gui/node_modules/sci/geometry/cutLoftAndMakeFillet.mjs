@@ -376,7 +376,7 @@ export const cutLoftByConeAndMakeFillet = (sections, paths, fillet, config) => {
     obj.bottomXYZ = transpose([crossPointsXYZ])
   }
   else{
-    obj.bottomtXYZ =ribs.map(v=>[])
+    obj.bottomXYZ =loftObj.ribs.map(v=>[])
   }
   
   if(topCutFlag){
@@ -385,7 +385,7 @@ export const cutLoftByConeAndMakeFillet = (sections, paths, fillet, config) => {
     obj.topXYZ = transpose([crossPointsXYZ])
   } 
   else{
-    obj.topXYZ = ribs.map(v=>[])
+    obj.topXYZ = loftObj.ribs.map(v=>[])
   }
   
    
