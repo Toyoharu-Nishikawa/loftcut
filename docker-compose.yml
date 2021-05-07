@@ -1,24 +1,18 @@
 version: '3'
 services:
   api:
-    image: amrit3701/freecad-cli:latest
+    build:
+      context: ./
+      dockerfile: ./api/Dockerfile
     restart: always 
-    volumes:
-      - ./src:/usr/src
-    working_dir: '/usr/src'
-    tty: true
-    command: python3.8 server.py
-#    command: python --version
     networks:
       - default
 
-
   web:
-    image: nginx:alpine
+    build:
+      context: ./
+      dockerfile: ./web/Dockerfile
     restart: always 
-    volumes:
-      - ./public:/usr/share/nginx/html
-      - ./conf.d:/etc/nginx/conf.d
     networks:
       - neco_link
       - default
