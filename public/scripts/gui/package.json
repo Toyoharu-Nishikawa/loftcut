@@ -1,0 +1,17 @@
+{
+  "name": "gui",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "handsontable": "^6.2.2",
+    "sci": "^6.1.2",
+    "three": "^0.128.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
