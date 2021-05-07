@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "camera-controls": "^1.28.1",
     "handsontable": "^6.2.2",
     "sci": "^6.1.2",
     "three": "^0.128.0"

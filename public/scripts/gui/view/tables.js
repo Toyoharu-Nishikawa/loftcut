@@ -16,13 +16,9 @@ const topTableInitialize = () => {
     width: 300,
     height: 120,
     data: [[null, null], [null, null]] ,
-    colHeaders: ["x", "y"],
+    colHeaders: ["x", "r"],
     rowHeaders: ["starting point", "end point"],
     rowHeaderWidth: 120,
-///    columns: [
-///     {type: "numeric"},
-///     {type: "numeric"},
-///    ],
     autoColumnSize: true,
     afterChange(changes, source) {
       if (source === 'loadData'){return}
@@ -30,6 +26,8 @@ const topTableInitialize = () => {
         const cells = topPathTable.getData()
         const cells2 = cells.map(v=>v.map(u=>parseFloat(u)))
         console.log("cells", cells2)
+        const flag = cells2.flatMap(v=>v.map(u=>u!=null && !isNaN(u))).every(v=>v==true)
+        if(!flag){return}
         const paths = dataManager.get("paths")
         paths.top = cells2
         dataManager.set("paths", paths)
@@ -43,27 +41,30 @@ const topTableInitialize = () => {
 const bottomTableInitialize = () =>{
   const bottomPathElem = elements.bottomPath
   const bottomPathData = {
-   width: 300,
-   height: 120,
-   data: [[null, null], [null, null]] ,
-   colHeaders: ["x", "y"],
-   rowHeaders: ["starting point", "end point"],
-   rowHeaderWidth: 120,
-   autoColumnSize:true,
+    width: 300,
+    height: 120,
+    data: [[null, null], [null, null]] ,
+    colHeaders: ["x", "r"],
+    rowHeaders: ["starting point", "end point"],
+    rowHeaderWidth: 120,
+    autoColumnSize:true,
 //   columns: [
 //      {data:"x", type:"numeric"},
 //      {data:"y", type:"numeric"},
 //   ],
-   afterChange(changes, source) {
-     if (source === 'loadData'){return}
-     else{
-       const cells = topPathTable.getData()
-       const cells2 = cells.map(v=>v.map(u=>parseFloat(u)))
-       const paths = dataManager.get("paths")
-       paths.bottom = cells2
-       dataManager.set("paths", paths)
-       redraw()
-     }
+    afterChange(changes, source) {
+      if (source === 'loadData'){return}
+      else{
+        const cells = bottomPathTable.getData()
+        const cells2 = cells.map(v=>v.map(u=>parseFloat(u)))
+        const flag = cells2.flatMap(v=>v.map(u=>u!=null && !isNaN(u))).every(v=>v==true)
+        console.log("cells", cells2)
+        if(!flag){return}
+        const paths = dataManager.get("paths")
+        paths.bottom = cells2
+        dataManager.set("paths", paths)
+        redraw()
+      }
     },
   }
 

@@ -32,6 +32,7 @@ const makeFaces = (sec1, sec2) => {
   return triangles
 }
 
+
 const getThreeSurfaceObj = (sections, color="gray") => {
   
   const triangles = sections.map((v,i,arr)=>i>0?makeFaces(arr[i-1], v):null).slice(1)
@@ -46,12 +47,36 @@ const getThreeSurfaceObj = (sections, color="gray") => {
     }
   }
 
+  let id=0
+  const pointIds= []
+  sections.forEach((v,i)=>{
+    pointIds.push([])
+    v.forEach(u=>{
+      pointIds[i].push(id)
+      id++
+    })
+  })
+
+  const idTriangles = pointIds.map((v,i,arr)=>i>0?makeFaces(arr[i-1], v):null).slice(1)
+  const indices = []
+  for(let v of idTriangles){
+    for(let u of v){
+      for(let w of u){
+        indices.push(w)
+      }
+    }
+  }
+
   const posBuf = new Float32Array(positions)
+  const idBuf =new Uint16Array(indices)
   const geom = new THREE.BufferGeometry()
   geom.setAttribute('position', new THREE.BufferAttribute(posBuf, 3))
-  geom.computeVertexNormals() 
-  const material = new THREE.MeshLambertMaterial( { color: color, side: THREE.DoubleSide } )
-  const mesh = new THREE.Mesh(geom, material );
+  geom.setAttribute('index', new THREE.BufferAttribute(idBuf,  1))
+  const geomNew = THREE.BufferGeometryUtils.mergeVertices(geom)
+
+  geomNew.computeVertexNormals() 
+  const material = new THREE.MeshPhongMaterial( {color: color, side: THREE.DoubleSide} )
+  const mesh = new THREE.Mesh(geomNew, material );
   return mesh
 }
 
@@ -137,46 +162,65 @@ export const initialize = () => {
   initialWindowHeight =  window.innerHeight 
   initialWidth = width 
   initialHeight =  height 
+  
+  CameraControls.install( { THREE: THREE } )
 
+  const clock = new THREE.Clock()
 
   scene = new THREE.Scene();
   camera = new THREE.PerspectiveCamera(45,width/height, 0.1, 3000);
+///  camera = new THREE.PerspectiveCamera( 60, width / height, 0.01, 100 );
+  camera.up.set( 0, 0, 1 );
+  camera.position.set( 100, 100, 100 );
+
   renderer = new THREE.WebGLRenderer({
     alpha: true,
   })
-  ///renderer.setClearColor(new THREE.Color("rgb(0,0,0)"));
   renderer.setSize(width, height);
+  drawElem.appendChild(renderer.domElement);
 
-  const controls =  new THREE.OrbitControls(camera, drawElem);
+  const cameraControls = new CameraControls( camera, renderer.domElement );
+
+
+//  const mesh = new THREE.Mesh(
+//    new THREE.BoxGeometry( 1, 1, 1 ),
+//    new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } )
+//  );
+//  scene.add( mesh );
+//
 //  const axes = new THREE.AxesHelper(100);
 //  scene.add(axes);
+//
+//  const gridHelper = new THREE.GridHelper( 50, 50 );
+//  gridHelper.position.y = - 1;
+//  scene.add( gridHelper );
+
 
   const directionalLight = new THREE.DirectionalLight(0xffffff)
   directionalLight.position.set(100,100,100)
   camera.add(directionalLight)
-
-//  const cubeGeom = new THREE.BoxGeometry(5,5,5)
-//  const cubeMat = new THREE.MeshLambertMaterial({color: 0xff0000})
-//  const cube = new THREE.Mesh(cubeGeom, cubeMat)
-//  cube.position.set(0,0,0)
-//  scene.add(cube)
  
-  camera.position.x = 100
-  camera.position.y = 100
-  camera.position.z = 100
 
   scene.add(camera)
 
-  const animate =() =>{
-    requestAnimationFrame( animate );
-    renderer.render( scene, camera );
-    controls.update();
+  renderer.render(scene, camera)
+//  const animate =() =>{
+//    requestAnimationFrame( animate );
+//    renderer.render( scene, camera );
+//    controls.update();
+//  }
+  const animate = () => {
+    const delta = clock.getDelta();
+    const hasControlsUpdated = cameraControls.update( delta )
+    requestAnimationFrame( animate )
+    if(hasControlsUpdated) {
+      renderer.render(scene, camera)
+    }
   }
 
-  drawElem.appendChild(renderer.domElement);
+
 
   
-//renderer.render(scene, camera)
 
   animate();
 
@@ -188,8 +232,10 @@ export const redraw = (sections2) => {
 
   meshList.forEach(v=>scene.remove(v))
 
-  const sections3 = convert(sections2)
-  const center = getCenter(sections3) 
-  const sections4 = move(sections3,center)
+  //const sections3 = convert(sections2)
+  const center = getCenter(sections2) 
+  const sections4 = move(sections2,center)
   addLoft(sections4) 
+
+  renderer.render(scene, camera)
 }
