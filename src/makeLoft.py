@@ -82,8 +82,8 @@ class MakeLoft:
     def makeLoft(self):
         addedSections = self.addedSections if self.config["offsetFlag"] else self.sections
         wires = [self.makeSec(v) for v in addedSections]
-        comp = self.doc.addObject("Part::Compound","Compound")
-        comp.Links =wires
+#        comp = self.doc.addObject("Part::Compound","Compound")
+#        comp.Links =wires
       
       
         loft = self.doc.addObject('Part::Loft','Loft')
